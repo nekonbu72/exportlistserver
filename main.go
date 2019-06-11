@@ -7,10 +7,14 @@ import (
 )
 
 func main() {
+	http.ListenAndServe(":5050", newHandler())
+
+	// http://localhost:5050/ping
+}
+
+func newHandler() http.Handler {
 	s := &Server{}
 	mux := http.NewServeMux()
 	mux.HandleFunc("/ping", s.handle)
-	http.ListenAndServe(":5050", cors.Default().Handler(mux))
-
-	// http://localhost:5050/ping
+	return cors.Default().Handler(mux)
 }

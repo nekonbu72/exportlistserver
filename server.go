@@ -26,8 +26,7 @@ func (s *Server) handle(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) handleGet(w http.ResponseWriter, r *http.Request) {
-	p := NewPath(r.URL.Path)
-	result, err := businessLogic(*p)
+	result, err := businessLogic(NewPath(r.URL.Path))
 	if err != nil {
 		respondErr(w, r, http.StatusInternalServerError, err)
 		return
