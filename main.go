@@ -12,5 +12,5 @@ func main() {
 	mux.HandleFunc("/ping", s.handle)
 	http.ListenAndServe(":5050", cors.Default().Handler(mux))
 
-	// http://localhost:8080/ping
+	// http://localhost:5050/ping
 }
