@@ -26,17 +26,6 @@ func businessLogic(p *Path) ([]*exportlistmapping.Data, error) {
 		return nil, err
 	}
 
-	excelSetting, err := exportlistmapping.NewSetting(path.Join(settingDir, excel))
-	if err != nil {
-		return nil, err
-	}
-
-	mailClient, err := mailg.Login(mailSetting.ConnInfo)
-	if err != nil {
-		return nil, err
-	}
-	defer mailClient.Logout()
-
 	sinceSlice, ok := p.Query["since"]
 	if ok == false {
 		return nil, errors.New("No since in query")
@@ -48,6 +37,17 @@ func businessLogic(p *Path) ([]*exportlistmapping.Data, error) {
 		return nil, errors.New("No before in query")
 	}
 	mailSetting.Criteria.Duration.Before = beforeSlice[0]
+
+	excelSetting, err := exportlistmapping.NewSetting(path.Join(settingDir, excel))
+	if err != nil {
+		return nil, err
+	}
+
+	mailClient, err := mailg.Login(mailSetting.ConnInfo)
+	if err != nil {
+		return nil, err
+	}
+	defer mailClient.Logout()
 
 	done := make(chan interface{})
 	defer close(done)
