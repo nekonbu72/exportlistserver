@@ -12,7 +12,7 @@ func TestServer(t *testing.T) {
 	testServer := httptest.NewServer(newHandler())
 	defer testServer.Close()
 
-	r, err := http.Get(testServer.URL + "/ping")
+	r, err := http.Get(testServer.URL + "/ping?since=20190611JST&before=20190612JST")
 	if err != nil {
 		t.Errorf("http.Get(). %v", err)
 		return
@@ -32,6 +32,10 @@ func TestServer(t *testing.T) {
 	}
 	if dataStr[2:7] == "error" {
 		// メールのパスワードなど conninfo のエラー
+		t.Error(dataStr)
+		return
+	}
+	if dataStr == "404 page not found\n" {
 		t.Error(dataStr)
 		return
 	}

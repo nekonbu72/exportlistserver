@@ -5,21 +5,18 @@ import (
 )
 
 func TestNewPath(t *testing.T) {
-	const url = "https://xxx.com?a=AAA&b=BBB&c=CCC&d=DDD&a=EEE"
+	const url = "https://xxx.com/yyy?since=2019-06-11&before=2019-06-12"
 	p := NewPath(url)
 	if !p.HasQuery() {
-		t.Error()
+		t.Error("HasQuery()")
 	}
 
-	if p.Query["a"][0] != "AAA" {
-		t.Error()
+	if p.Query["since"][0] != "2019-06-11" {
+		t.Error("since")
 	}
 
-	if p.Query["b"][0] != "BBB" {
-		t.Error()
+	if p.Query["before"][0] != "2019-06-12" {
+		t.Error("before")
 	}
 
-	if p.Query["a"][1] != "EEE" {
-		t.Error()
-	}
 }

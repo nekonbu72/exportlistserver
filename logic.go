@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"path"
 
 	"github.com/nekonbu72/xemlsx"
@@ -16,6 +17,10 @@ const (
 )
 
 func businessLogic(p *Path) ([]*exportlistmapping.Data, error) {
+	if p.HasQuery() == false {
+		return nil, errors.New("URL has no query")
+	}
+
 	mailSetting, err := mailg.NewSetting(path.Join(settingDir, mail))
 	if err != nil {
 		return nil, err
@@ -32,12 +37,17 @@ func businessLogic(p *Path) ([]*exportlistmapping.Data, error) {
 	}
 	defer mailClient.Logout()
 
-	if p.HasQuery() == false {
-		//
-		mailSetting.Criteria.Duration.Since = "2019-06-11 JST"
-		mailSetting.Criteria.Duration.Before = "2019-06-12 JST"
-		//
+	sinceSlice, ok := p.Query["since"]
+	if ok == false {
+		return nil, errors.New("No since in query")
 	}
+	mailSetting.Criteria.Duration.Since = sinceSlice[0]
+
+	beforeSlice, ok := p.Query["before"]
+	if ok == false {
+		return nil, errors.New("No before in query")
+	}
+	mailSetting.Criteria.Duration.Before = beforeSlice[0]
 
 	done := make(chan interface{})
 	defer close(done)
