@@ -9,7 +9,7 @@ import (
 func main() {
 	http.ListenAndServe(":5050", newHandler())
 
-	// http://localhost:5050/ping
+	// http://localhost:5050/ping?since=20190611JST&before=20190612JST"
 }
 
 func newHandler() http.Handler {
