@@ -1,3 +1,4 @@
 *.exe
 settings/*
 debug.test
+dist
