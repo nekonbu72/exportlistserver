@@ -26,7 +26,6 @@ func newHandler() http.Handler {
 }
 
 func newStaticHandler() http.Handler {
-	// static := "C:/Users/s150209/Desktop/shortcuts/開発/javascript/export-list/dist"
 	static := "./static"
 	return http.FileServer(http.Dir(static))
 }
